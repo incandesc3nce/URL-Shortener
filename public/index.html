@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+</head>
+<body>
+  <h1>REST API для сервиса сокращений URL</h1>
+  <form action="">
+    <input type="text" name="url" placeholder="Введите URL" />
+    <button type="submit">Сократить</button>
+  </form>
+  <div id="result"></div>
+
+  <script defer>
+    const form = document.querySelector('form');
+    const result = document.querySelector('#result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = form.url.value;
+      const response = await fetch('/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ originalUrl: url }),
+      });
+      const data = await response.json();
+      result.innerHTML = `<a href="${data.shortenedUrl}" target="_blank">${data.shortenedUrl}</a>`;
+    });
+  </script>
+</body>
+</html>
